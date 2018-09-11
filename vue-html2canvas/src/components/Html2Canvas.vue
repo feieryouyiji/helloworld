@@ -13,11 +13,11 @@
 
 </template>
 <script>
-import qrCode  from 'qrcodejs2'
+
 import html2canvas from 'html2canvas'
 import $ from 'jquery'
 
-console.log("qrCode", qrCode)
+
 
 export default {
   name: 'Html2Canvas',
