@@ -5,7 +5,9 @@
       I am freedom
     </div>
     <button @click="takeScreenshot">截图</button>
-    <div id="b-my-canvas"></div>
+    <div id="b-my-canvas" v-show="dataUrl">
+      <img :src="dataUrl" alt="">
+    </div>
 
     
   </div>
@@ -23,7 +25,7 @@ export default {
   name: 'Html2Canvas',
   data(){
     return {
-
+      dataUrl: undefined,
     }
   },
   mounted(){
@@ -44,21 +46,17 @@ export default {
     },
     takeScreenshot() {
       let originDom = $(this.$el).find('#b-my-test')[0]
-      let targetDom = $(this.$el).find('#b-my-canvas')[0]
+
+      originDom = originDom.cloneNode(true)
+      originDom.style['z-index'] = '-1'
+      
+      document.body.append(originDom)
 
       html2canvas(originDom, {
         useCORS: true
       }).then(canvas => {
-        console.log(' enter then ', canvas)
-        let img = document.createElement('img')
-        let pictureInner = targetDom
-
-        img.setAttribute('id', 'snapshoot')
-        img.src = canvas.toDataURL('image/png')
-        if (pictureInner.firstChild) {
-          pictureInner.removeChild(pictureInner.firstChild)
-        }
-        pictureInner.appendChild(img)
+        this.dataUrl = canvas.toDataURL('image/jpeg')
+        originDom.remove()
       })
     }
   }
